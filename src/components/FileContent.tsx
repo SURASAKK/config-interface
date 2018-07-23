@@ -12,6 +12,8 @@ const ContentDiv = styled.div`
   flex-grow: 1;
   margin-bottom: 10px;
   display: block;
+  max-width: 100%;
+  width: 100%;
 `
 type Props = {
     ProjectContent: string
@@ -25,7 +27,7 @@ export class FileContent extends React.Component<Props, State> {
     constructor(props) {
         super(props)
         this.state = {
-            projectContent: props.projectContent
+            projectContent: props.projectContent,
         }
         this.handleContentChange = this.handleContentChange
     }
@@ -34,7 +36,7 @@ export class FileContent extends React.Component<Props, State> {
     }
     public componentWillReceiveProps(props: Props) {
         this.state = {
-            projectContent: props.ProjectContent
+            projectContent: props.ProjectContent,
         }
     }
     public onSave = (e) => {
@@ -42,26 +44,29 @@ export class FileContent extends React.Component<Props, State> {
     }
     public render() {
         const ButtonSave = () => (
-            <Button animated icon labelPosition="left" color="green" floated="right" value="Save" name="Save" onClick={this.onSave}>
-                <Button.Content visible><Icon name="save" /> Save</Button.Content>
-                <Button.Content hidden><Icon name="check" />Confirm</Button.Content>
+            // <Button secondary onClick={this.onSave} floated="right">Save</Button>
+            <Button floated="right" icon labelPosition="left" onClick={this.onSave}>
+                <Icon name="save" />
+                Save
             </Button>
         )
         const options = {
-            minimap: { enabled: false }
+            minimap: { enabled: false },
+            automaticLayout: true,
+            rulers: [150]
         } as any;
         return (
             <div>
-                <Segment inverted color="teal" secondary>
-                    <ContentDiv>
-                        <Header as="h3">
+                <ContentDiv>
+                    <Segment>
+                        <Header as="h5">
                             <Icon name="edit" />
                             <Header.Content>Content</Header.Content>
                         </Header>
-                        <MonacoEditor options={options} language="json" width="130%" height="350" theme="vs-light"
+                        <MonacoEditor options={options} language="json" width="100%" height="80%" theme="vs-light" max-width="100%"
                             value={this.state.projectContent} onChange={this.handleContentChange} />
-                    </ContentDiv>
-                </Segment>
+                    </Segment>
+                </ContentDiv>
                 <div>
                     <ButtonSave />
                 </div>

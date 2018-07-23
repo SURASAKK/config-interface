@@ -13,6 +13,16 @@ export type Node = {
     isFile: boolean
     parent: number
     pathFile: string
+    modifieDate: string
+}
+type LoginResult = {
+    access_token: string;
+}
+type pathFile = {
+    files: string[];
+}
+type pathProject = {
+    path: string;
 }
 
 export class SearchApi {
@@ -24,7 +34,7 @@ export class SearchApi {
         return axios.get<string[]>(`${this.url}/api/search/getProjectNames`)
     }
     public getProjectSettings(projectName: string) {
-        return axios.get<string[]>(`${this.url}/api/search/getProjectSettings/?projectName=${projectName}`)
+        return axios.get<pathFile>(`${this.url}/api/search/getProjectSettings/?projectName=${projectName}`)
     }
     public getSettingContent(projectPath: string) {
         return axios.get<ContentResult>(`${this.url}/api/search/getSettingContent/?path=${projectPath}`)
@@ -40,5 +50,14 @@ export class SearchApi {
     }
     public getNode(path: string) {
         return axios.get<Node[]>(`${this.url}/api/Search/GetNodes?path=${path}`)
+    }
+    public Login(user: string, pass: string) {
+        return axios.post<LoginResult>(`${this.url}/api/Search/LoginRequest`, {
+            User: user,
+            Pass: pass
+        })
+    }
+    public getPath(projectName: string) {
+        return axios.get<pathProject>(`${this.url}/api/search/GetProjectPath/?projectName=${projectName}`)
     }
 }

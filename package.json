@@ -1,39 +1,43 @@
 {
-    "name": "config-interface",
-    "version": "1.0.0",
-    "description": "```bash npm install ```",
-    "main": "index.js",
-    "dependencies": {
-        "highlightable": "^1.0.7"
-    },
-    "devDependencies": {
-        "@types/react": "^16.4.6",
-        "@types/react-alert": "^2.4.1",
-        "@types/react-dom": "^16.0.6",
-        "axios": "^0.18.0",
-        "babel-core": "^6.26.3",
-        "babel-plugin-transform-object-rest-spread": "^6.26.0",
-        "parcel-bundler": "^1.9.7",
-        "react": "^16.4.1",
-        "react-dom": "^16.4.1",
-        "react-monaco-editor": "^0.17.2",
-        "semantic-ui-css": "^2.3.2",
-        "semantic-ui-react": "^0.81.3",
-        "styled-components": "^3.3.3",
-        "typescript": "^2.9.2"
-    },
-    "scripts": {
-        "start": "parcel watch src/index.html -d ../ConfigService/src/ConfigService/wwwroot --public-url /",
-        "build": "parcel build src/index.html -d ../ConfigService/src/ConfigService/wwwroot --public-url /"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/bcircle-intern/config-interface.git"
-    },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/bcircle-intern/config-interface/issues"
-    },
-    "homepage": "https://github.com/bcircle-intern/config-interface#readme"
+  "name": "config-interface",
+  "version": "1.0.0",
+  "description": "```bash npm install ```",
+  "main": "index.js",
+  "dependencies": {
+    "highlightable": "^1.0.7",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.4.6",
+    "@types/react-alert": "^2.4.1",
+    "@types/react-dom": "^16.0.6",
+    "axios": "^0.18.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "parcel-bundler": "^1.9.7",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-monaco-editor": "^0.17.2",
+    "semantic-ui-css": "^2.3.3",
+    "semantic-ui-react": "^0.81.3",
+    "styled-components": "^3.3.3",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "start": "parcel watch src/index.html -d ../ConfigService/src/ConfigService/wwwroot --public-url /",
+    "build": "parcel build src/index.html -d ../ConfigService/src/ConfigService/wwwroot --public-url /"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcircle-intern/config-interface.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcircle-intern/config-interface/issues"
+  },
+  "homepage": "https://github.com/bcircle-intern/config-interface#readme"
 }

@@ -16,22 +16,22 @@ export class ProjectList extends React.Component<Props> {
     constructor(props) {
         super(props)
     }
-      public setValue(e, data) {
+    public setValue(e, data) {
         this.props.onChange(data.value)
-      }
+    }
     public render() {
         const DropdownProjectName = ({ }) => (
             <Dropdown placeholder={this.props.projectName} fluid selection options={this.props.dropdownOption}
-              onChange={this.setValue.bind(this)} value={this.props.projectName} />
-          )
+                onChange={this.setValue.bind(this)} value={this.props.projectName} />
+        )
         return (
             <div>
-                <Header as="h3">
-                <Icon name="archive" />
-                <Header.Content>Select Project</Header.Content>
+                <Header as="h5">
+                    <Icon name="archive" />
+                    <Header.Content>Select Project</Header.Content>
                 </Header>
-            <DropdownProjectName />
-            <Divider />
+                <DropdownProjectName />
+                <Divider />
             </div>
         )
     }

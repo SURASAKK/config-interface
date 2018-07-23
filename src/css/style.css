@@ -3,13 +3,93 @@ textarea {
     padding: 10px;
 }
 
-body { 
-        background-image: url(http://shmector.com/_ph/17/990955453.png) ;
+body {
+        background-image: url(http://www.tokkoro.com/picsup/2807356-drawing-deer-artwork-silhouette-landscape-nature-digital-art-trees-pine-trees-sunset-lake-hill-animals-vectors-warm-colors___landscape-nature-wallpapers.jpg) ;
+        /* background-image: url(http://www.tokkoro.com/picsup/2808141-sunrise-lake-artwork-gradient-vectors-landscape___landscape-nature-wallpapers.jpg) ; */
         background-position: center center;
         background-repeat:  no-repeat;
         background-attachment: fixed;
         background-size:  cover;
-        background-color: #999;
+        /* background-color: #999; */
 
+}
 
+div.login {  animation: 0.7s ease-out 0s 1 jackInTheBox;}
+
+div.out {
+  animation: 1s ease-out 0s 1 bounceOutDown;
+}
+div.wrong {
+  animation: 1s ease-out 0s 1 shake;
+}
+
+@keyframes shake {
+  from,
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+@keyframes bounceOutDown {
+  20% {
+    -webkit-transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
+
+  40%,
+  45% {
+    opacity: 1;
+    -webkit-transform: translate3d(0, -20px, 0);
+    transform: translate3d(0, -20px, 0);
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 2000px, 0);
+    transform: translate3d(0, 2000px, 0);
+  }
+}
+
+@keyframes jackInTheBox {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.1) rotate(30deg);
+    transform: scale(0.1) rotate(30deg);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+  }
+
+  50% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+
+  70% {
+    -webkit-transform: rotate(3deg);
+    transform: rotate(3deg);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
 }
