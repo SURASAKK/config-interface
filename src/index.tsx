@@ -9,6 +9,8 @@ import "semantic-ui-css/semantic.min.css"
 import "./css/Body.css"
 import AppStorage from "./share/AppStorage"
 
+import JsonWorker from "monaco-editor/esm/vs/language/json/json.worker"
+
 type State = {
     loggedIn: boolean
     styleR: string
@@ -41,16 +43,18 @@ export class App extends React.Component<{}, State> {
         this.setState({ styleBody: "bodyOut" })
         setTimeout(() => {
             this.setState({ loggedIn: false })
+            AppStorage.Logout()
         }, 800)
     }
 
     public componentDidMount() {
-        /*if (AppStorage.getLoggedIn() === "token") {
+        /*if (AppStorage.getAccessToken() !== null) {
         this.setState({ loggedIn: true })
         } else {
         this.setState({ loggedIn: false })
         }*/
-        this.setState({ loggedIn: AppStorage.getLoggedIn !== null })
+        this.setState({ loggedIn: AppStorage.getAccessToken() !== null })
+
     }
 
     public render() {

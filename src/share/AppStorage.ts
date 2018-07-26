@@ -1,11 +1,14 @@
 export default class AppStorage {
 
-    public static loggedIn = "loggedIn"
+    public static accessToken = "accessToken"
 
-    public static getLoggedIn(): string {
-        return sessionStorage.getItem(this.loggedIn)
+    public static Logout() {
+        sessionStorage.removeItem(this.accessToken)
     }
-    public static setLoggedIn(value: string): void {
-        sessionStorage.setItem(this.loggedIn, value)
+    public static getAccessToken(): string {
+        return sessionStorage.getItem(this.accessToken)
+    }
+    public static setAccessToken(value: string): void {
+        sessionStorage.setItem(this.accessToken, value)
     }
 }

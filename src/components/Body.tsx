@@ -1,12 +1,12 @@
 import React, { CSSProperties } from "react"
 import styled from "styled-components"
-import { getApiUrl } from "../share/Configuration";
-import { SearchApi, Node } from "../share/searchApi";
+import { getApiUrl } from "../share/Configuration"
+import { SearchApi, Node } from "../share/searchApi"
 import { ProjectList } from "./ProjectList"
 import { FileList } from "./FileList"
 import { FileContent } from "./FileContent"
-import { Segment } from "../../node_modules/semantic-ui-react";
-import "../css/Body.css"
+import { Segment } from "semantic-ui-react"
+import swal from "sweetalert2"
 
 type Props = {
     styleR: string
@@ -25,6 +25,9 @@ type State = {
     treeJson: string
     nodes: Node[]
     selectedNode: Node
+    extention: string
+    demoContent: string
+    formatPass: boolean
 }
 
 const BodyDiv = styled.div`
@@ -33,7 +36,7 @@ const BodyDiv = styled.div`
   justify-content: center;
   position: absolute;
   width:100%;
-  height: 100%;
+  height: 90%;
 `
 
 const LeftDiv = styled.div`
@@ -44,26 +47,25 @@ const LeftDiv = styled.div`
   left: 0;
   top: 0;
   height: calc(80% - 50px);
-  width: 30%;
-  min-width: 30%;
+  min-width: 350px;
   min-height: 10%;
   resize:vertical;
+  max-width: 20%;
 `
 
 const RightDiv = styled.div`
-  max-width:200px;
+  max-width:400px;
   display: absolute;
   flex-direction: column;
   flex-grow: 1;
-  max-width: 1000px;
   padding: 5px;
   right: 0;
   top: 0;
   width: 60%;
-  min-width: 60%;
-  min-height: 10%;
+  min-width: 65%;
+  min-height: 20%;
   resize:vertical;
-  height: calc(100% - 50px);
+  height: calc(100% - 30px);
 `
 
 export class Body extends React.Component<Props, State> {
@@ -89,23 +91,27 @@ export class Body extends React.Component<Props, State> {
                 parent: 0,
                 isFile: false,
                 pathFile: "",
-                modifieDate: ""
-            }
+                modifieDate: "",
+                fileType: ""
+            },
+            extention: "",
+            demoContent: "",
+            formatPass: null
         }
     }
 
     public componentDidMount() {
         this.searchApi.getProjectNames().then(res => {
-            let options = []
-            let name = []
-            res.data.map(x => {
-                // เอาdata push เข้าไปใน option
-                options.push({ value: x, text: x, icon: "folder" })
-                name.push(x)
-            });
+            let name = res.data;
+            let options = res.data.map(x => ({ value: x, text: x, icon: "folder" }))
             this.setState({ dropdownOption: options })
             // ได้ค่าโปรเจคทั้งหมดมาเก็บในoption
             this.defaultValue()
+        })
+        let exten = this.state.selectedNode.fileType
+        let pattern = this.getLanguage(exten)
+        this.setState({
+            extention: pattern
         })
     }
 
@@ -115,6 +121,7 @@ export class Body extends React.Component<Props, State> {
             this.setState({ projectName: name[0] })
             this.initProjectSettings(name[0])
         })
+
     }
 
     private getRoot = (): Node => {
@@ -128,7 +135,8 @@ export class Body extends React.Component<Props, State> {
                 id: 0,
                 parent: 0,
                 pathFile: "",
-                modifieDate: ""
+                modifieDate: "",
+                fileType: ""
             }
         }
     }
@@ -154,7 +162,7 @@ export class Body extends React.Component<Props, State> {
             this.initSettingContent(pathProjects[0])
             let filename2 = this.state.nodes.map(x => x.name)
             this.setState({ fileName: filename2 })
-            console.log("filename" + filename2)
+            console.log("filename" + this.state.fileName)
         })
     }
 
@@ -163,20 +171,42 @@ export class Body extends React.Component<Props, State> {
             this.setState({ projectContent: response.data.content, projectPath: response.data.path })
         })
     }
-
+    private initDemoContent = (path: string, content: string) => {
+        this.searchApi.getDemo(path, content).then(res => {
+            this.setState({ demoContent: res.data.content, formatPass: res.data.pass })
+            // console.log("DEmo" + res.data.content)
+        })
+    }
     private initSaveSettingContent = (path: string, content: string) => {
         if (!this.state.projectName) {
-            alert("Plese select project")
+            swal(
+                "warning!",
+                "Please select Project.",
+                "warning"
+            )
         }
         if (!this.state.projectPath || !this.state.projectContent) {
-            alert("Plese select path")
+            swal(
+                "warning!",
+                "Please select Path.",
+                "warning"
+            )
         }
         this.searchApi.saveSettingContent(path, content).then(res => {
             if (res.data.success) {
-                alert("SAVE!")
-                console.log("SAVE!");
+                swal({
+                    position: "center",
+                    type: "success",
+                    title: "Your file has been saved",
+                    showConfirmButton: false,
+                    timer: 1200
+                  })
             } else {
-                alert("ERROR : " + Error)
+                swal(
+                    "Error!",
+                    Error.toString(),
+                    "error"
+                )
             }
         })
     }
@@ -188,44 +218,78 @@ export class Body extends React.Component<Props, State> {
             projectPath: "",
             fileName: [],
             pathProject: [],
-            nodes: []
+            nodes: [],
+            selectedNode: {
+                name: "",
+                id: 0,
+                isRoot: true,
+                parent: 0,
+                isFile: false,
+                pathFile: "",
+                modifieDate: "",
+                fileType: ""
+            }
         })
         this.initProjectSettings(project)
     }
 
+    private getLanguage(extension: string) {
+        const langs = {
+            ".json": "json",
+            ".xml": "xml",
+            ".config": "xml",
+            ".properties": "ini"
+        }
+        let lang = langs[extension];
+        return lang === null ? "json" : lang
+    }
+
     private onSelect = (node) => {
         let pathFile = node.pathFile
+        let exten = node.fileType
+        let pattern = this.getLanguage(exten)
         this.setState({
             selectedNode: node,
-            projectPath: pathFile
+            projectPath: pathFile,
+            extention: pattern
         })
         this.initSettingContent(pathFile)
     }
+    private onDemo = () => {
+        this.initDemoContent(this.state.projectPath, this.state.projectContent)
+    }
 
-    private onContentChange = (content) => {
+    private onSaveContent = (content) => {
         this.setState({
             projectContent: content
         });
         this.initProjectSettings(this.state.projectName)
         this.initSaveSettingContent(this.state.projectPath, content)
+
+    }
+
+    private onContentChange = (content) => {
+        this.setState({ projectContent: content })
     }
 
     public render() {
         let { projectName, projectPath, dropdownOption, fileName
-            , pathProject, projectContent } = this.state
+            , pathProject, projectContent, demoContent, selectedNode
+            , formatPass } = this.state
         return (
             <BodyDiv style={this.props.style}>
                 <LeftDiv className={this.props.styleL}>
                     <Segment>
                         <ProjectList projectName={projectName} dropdownOption={dropdownOption} onChange={this.onProjectChange} />
-                        <div className= "box">
-                        <FileList isSelected={this.isSelected} onSelect={this.onSelect} nodes={this.state.nodes} folder={this.getRoot()}
-                            projectPath={projectPath} fileName={fileName} pathProject={pathProject} />
+                        <div className="box">
+                            <FileList isSelected={this.isSelected} onSelect={this.onSelect} nodes={this.state.nodes} folder={this.getRoot()}
+                                projectPath={projectPath} fileName={fileName} pathProject={pathProject} />
                         </div>
                     </Segment>
                 </LeftDiv>
                 <RightDiv className={this.props.styleR}>
-                    <FileContent ProjectContent={projectContent} onChange={this.onContentChange} />
+                    <FileContent pass={formatPass} projectPath={projectPath} selectNode={selectedNode} demoText={demoContent} onDemo={this.onDemo} extention={this.state.extention}
+                        ProjectContent={projectContent} onChange={this.onSaveContent} onContentChange={this.onContentChange} />
                 </RightDiv>
             </BodyDiv>
         );

@@ -48,7 +48,7 @@ export class Login extends React.Component<Props, State> {
     }
     private initLogin = (user: string, pass: string) => {
         this.searchApi.Login(user, pass).then(res => {
-                AppStorage.setLoggedIn(res.data.access_token)
+                AppStorage.setAccessToken(res.data.accessToken)
                 this.setState({ status: true, style: "out" })
                 setTimeout(() => {
                     this.setState({ render: true })

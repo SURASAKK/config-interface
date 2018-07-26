@@ -12,8 +12,8 @@ type State = {
 }
 export class Header extends React.Component<Props, State> {
     public onLogout = () => {
-        AppStorage.setLoggedIn(null)
         this.props.onLogout(false)
+        AppStorage.setAccessToken(null)
     }
     constructor(props) {
         super(props);
